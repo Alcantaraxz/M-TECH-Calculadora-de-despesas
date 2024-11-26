@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="sorteio2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Calculadora de Despesas</title>
+   
+  </head>
+
+  <header>
+    <img src="mtech.jpg" alt="">
+  </header>
+
+  <body>
+    <div class="formulario-despesas">
+        <h3>Despesas Mensais</h3>
+        <div id="mensagemErro" class="mensagem-erro"></div>
+        <div class="item-despesa">
+          <input class="nome" type="text" id="nomeDespesa" placeholder="Nome da despesa">
+          <input class="valor" type="number" id="valorDespesa" placeholder="Valor" min="0">
+          <button onclick="adicionarDespesa()">Adicionar Despesa</button>
+        </div>
+        <div class="total-despesas">
+          <h4>Total: R$ <span id="total">0,00</span></h4>
+        </div>
+      </div>
+      <div id="despesas"></div>
+    <script>
+        let total = 0;
+        const despesasDiv = document.getElementById('despesas');
+        const mensagemErro = document.getElementById('mensagemErro');
+
+        function adicionarDespesa() {
+            const nome = document.getElementById('nomeDespesa').value.trim();
+            const valor = parseFloat(document.getElementById('valorDespesa').value);
+            mensagemErro.textContent = ''; // Limpa mensagem de erro
+
+            if (!nome || isNaN(valor) || valor <= 0) {
+                mensagemErro.textContent = 'Por favor, insira um nome válido e um valor maior que zero.';
+                return;
+            }
+
+            const itemDespesa = document.createElement('div');
+            itemDespesa.className = 'item-despesa';
+            itemDespesa.textContent = `${nome}: R$ ${valor.toFixed(2).replace('.', ',')}`;
+
+            // Adiciona funcionalidade de remoção ao clicar na despesa
+            itemDespesa.addEventListener('click', () => {
+                despesasDiv.removeChild(itemDespesa);
+                total -= valor;
+                document.getElementById('total').textContent = total.toFixed(2).replace('.', ',');
+            });
+
+            despesasDiv.appendChild(itemDespesa);
+            total += valor;
+            document.getElementById('total').textContent = total.toFixed(2).replace('.', ',');
+
+            // Limpa os campos de entrada
+            document.getElementById('nomeDespesa').value = '';
+            document.getElementById('valorDespesa').value = '';
+        }
+    </script>
+</body>
+
+</html>
